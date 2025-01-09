@@ -8,6 +8,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 body.dark {
@@ -15,32 +16,26 @@ body.dark {
     color: #ecf0f1;
 }
 
-body.dark .container {
+body.dark .app-container {
     background: #34495e;
 }
 
-body.dark #addTaskButton {
-    background: #16a085;
-}
-
-body.dark #addTaskButton:hover {
-    background: #1abc9c;
-}
-
-body.dark #taskList li {
+body.dark #todo-list li {
     background: #2a3441;
 }
 
-body.dark #taskList li:hover {
+body.dark #todo-list li:hover {
     background: #46566b;
 }
 
+/* App Container */
 .app-container {
     background-color: #fff;
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 300px;
+    max-width: 90%;
 }
 
 h1 {
@@ -61,6 +56,12 @@ h1 {
     font-size: 16px;
     border: 1px solid #141414;
     border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.todo-input input:focus {
+    border-color: #2863a7;
+    outline: none;
 }
 
 .todo-input button {
@@ -71,6 +72,7 @@ h1 {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .todo-input button:hover {
@@ -93,6 +95,11 @@ h1 {
     border-radius: 4px;
     margin-bottom: 10px;
     background-color: #9ecbff;
+    transition: background-color 0.3s;
+}
+
+#todo-list li:hover {
+    background-color: #c2e4ff;
 }
 
 #todo-list li button {
@@ -102,17 +109,24 @@ h1 {
     border-radius: 4px;
     padding: 5px 10px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #todo-list li button:hover {
     background-color: #c82333;
 }
 
-#addTaskButton {
+/* Dark Mode Toggle */
+#darkModeToggle {
     background: #8f04ec;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
     transition: background 0.3s;
 }
 
-#addTaskButton:hover {
+#darkModeToggle:hover {
     background: #fc2525;
 }
