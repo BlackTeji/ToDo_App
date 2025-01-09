@@ -11,7 +11,6 @@ body {
     background-size: 400% 400%;
     animation: gradientBG 10s ease infinite;
     transition: background 0.5s ease-in-out;
-    /* Smooth background transitions */
 }
 
 /* Dark mode adjustments */
@@ -51,6 +50,7 @@ body.dark #motivationalQuote {
     color: #bdc3c7;
 }
 
+/* App container */
 .app-container {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 20px 30px;
@@ -74,19 +74,6 @@ h1 {
 
 body.dark h1 {
     color: #ecf0f1;
-}
-
-/* Motivational Quotes */
-#motivationalQuote {
-    font-size: 14px;
-    color: #555;
-    font-style: italic;
-    margin: 10px 0 20px;
-    text-align: center;
-}
-
-body.dark #motivationalQuote {
-    color: #bdc3c7;
 }
 
 /* Input Section */
@@ -219,4 +206,45 @@ body.dark #todo-list li.completed {
     border-radius: 3.5px;
     padding: 5px 8px;
     cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 15px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .todo-input {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .todo-input input,
+    .todo-input button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #todo-list li {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    #todo-list li button {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    #priority,
+    #category,
+    #due-date,
+    #reminder-time {
+        width: 100%;
+    }
 }

@@ -57,7 +57,7 @@ darkModeToggle.addEventListener("click", () => {
     updateBackground(); // Update background to match dark mode
 });
 
-// Add task event for the "Add" button
+// Add task event
 function addTask() {
     const taskText = todoInput.value.trim();
     const category = categorySelect.value;
@@ -113,8 +113,12 @@ function addTask() {
     reminderTimeInput.value = "";
 }
 
-// Add task when the "Enter" key is pressed
-todoInput.addEventListener("keydown", (event) => {
+// Add event listener for adding tasks on both click and touch events
+addBtn.addEventListener("click", addTask);
+addBtn.addEventListener("touchstart", addTask);  // Added for mobile touch events
+
+// Ensure the "Enter" key can also add a task
+todoInput.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
         addTask();
     }
