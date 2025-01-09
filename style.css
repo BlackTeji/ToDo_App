@@ -1,31 +1,92 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    font-family: 'Lato', Arial, sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+    transition: background 0.5s ease-in-out;
+    /* Smooth background transitions */
 }
 
+/* Dark mode adjustments */
 body.dark {
-    background: #243546;
-    color: #68a0ad;
+    background: linear-gradient(-45deg, #243544, #3b4c5f, #485b6e, #354957);
+    animation: gradientBG 10s ease infinite;
+    color: #ecf0f1;
+}
+
+/* Category-based backgrounds */
+body.category-work {
+    background: linear-gradient(-45deg, #4facfe, #00f2fe);
+}
+
+body.category-personal {
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4);
+}
+
+body.category-shopping {
+    background: linear-gradient(-45deg, #fbc2eb, #a1c4fd);
+}
+
+body.category-others {
+    background: linear-gradient(-45deg, #a1c4fd, #c2e9fb);
+}
+
+/* Motivational Quote styles */
+#motivationalQuote {
+    font-size: 14px;
+    color: #555;
+    font-style: italic;
+    margin: 10px 0 20px;
+    text-align: center;
+}
+
+body.dark #motivationalQuote {
+    color: #bdc3c7;
 }
 
 .app-container {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 450px;
+    width: 800px;
+    max-width: 100%;
+    backdrop-filter: blur(8px);
 }
 
+body.dark .app-container {
+    background-color: rgba(36, 53, 68, 0.9);
+}
+
+/* Header Styles */
 h1 {
     text-align: center;
     color: #333;
+    font-weight: 700;
+}
+
+body.dark h1 {
+    color: #ecf0f1;
+}
+
+/* Motivational Quotes */
+#motivationalQuote {
+    font-size: 14px;
+    color: #555;
+    font-style: italic;
+    margin: 10px 0 20px;
+    text-align: center;
+}
+
+body.dark #motivationalQuote {
+    color: #bdc3c7;
 }
 
 /* Input Section */
@@ -33,7 +94,6 @@ h1 {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
-    justify-content: space-between;
 }
 
 .todo-input input {
@@ -47,7 +107,7 @@ h1 {
 .todo-input button {
     padding: 10px 15px;
     font-size: 16px;
-    background-color: #2863a7;
+    background-color: #5d92cf;
     color: white;
     border: none;
     border-radius: 4px;
@@ -55,15 +115,33 @@ h1 {
 }
 
 .todo-input button:hover {
-    background-color: #112dcc;
+    background-color: #48739c;
 }
 
-#clear-btn {
-    background-color: #ff4747;
+/* Priority Dropdown */
+.priority-container {
+    margin-bottom: 10px;
 }
 
-#clear-btn:hover {
-    background-color: #c82333;
+#priority {
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Due Date Input */
+.due-date-container {
+    margin-bottom: 10px;
+}
+
+#due-date,
+#reminder-time {
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
 }
 
 /* Todo List */
@@ -86,12 +164,12 @@ h1 {
 }
 
 #todo-list li.completed {
-    background-color: #d3ffd3;
+    background-color: #4b7dbe;
     text-decoration: line-through;
 }
 
 #todo-list li button {
-    background-color: #b62828;
+    background-color: #c74f4f;
     color: white;
     border: none;
     border-radius: 4px;
@@ -103,31 +181,42 @@ h1 {
     background-color: #c82333;
 }
 
-/* Dark Mode */
-body.dark .todo-input input,
+/* Category Dropdown */
+.category-container {
+    margin-bottom: 8px;
+}
+
+#category {
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Dark Mode Styles */
+body.dark .todo-input button {
+    background: #246a6b;
+}
+
 body.dark #todo-list li {
-    background: #1a3a5a;
+    background: #246a6b;
 }
 
-body.dark .todo-input input {
-    color: #fdfdfd;
+body.dark #todo-list li:hover {
+    background: #618e91;
 }
 
-body.dark #clear-btn {
-    background: #ff4747;
-}
-
-body.dark #clear-btn:hover {
-    background: #992b36;
+body.dark #todo-list li.completed {
+    background-color: #618e91;
 }
 
 /* Dark Mode Toggle Button */
 #darkModeToggle {
-    margin-bottom: 2%;
-    padding: 10px 15px;
-    background-color: #2863a7;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #3b4c5f;
+    color: rgb(255, 255, 255);
+    border: #276155;
+    border-radius: 3.5px;
+    padding: 5px 8px;
     cursor: pointer;
 }

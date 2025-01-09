@@ -1,92 +1,127 @@
-// Get references to DOM elements
+// DOM references
 const todoInput = document.getElementById("todo-input");
 const addBtn = document.getElementById("add-btn");
 const todoList = document.getElementById("todo-list");
-const darkModeToggle = document.getElementById('darkModeToggle');
-const clearBtn = document.getElementById('clear-btn');
+const darkModeToggle = document.getElementById("darkModeToggle");
+const categorySelect = document.getElementById("category");
+const prioritySelect = document.getElementById("priority");
+const dueDateInput = document.getElementById("due-date");
+const reminderTimeInput = document.getElementById("reminder-time");
+const motivationalQuote = document.getElementById("motivationalQuote");
 
-// Load tasks from localStorage
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+// Quotes Array (Fallback for API)
+const quotes = [
+    "You're doing great! Keep it up.",
+    "Every small step counts.",
+    "Believe in yourself and all that you are.",
+    "Success is the sum of small efforts, repeated daily.",
+    "Keep going, you're closer than you think."
+];
 
-// Add event listener for dark mode toggle
-darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
+// Function to fetch quotes from API
+async function fetchQuote() {
+    try {
+        const response = await fetch("https://api.quotable.io/random");
+        const data = await response.json();
+        motivationalQuote.textContent = `"${data.content}" - ${data.author}`;
+    } catch (error) {
+        // Fallback to static quotes
+        motivationalQuote.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    }
+}
+
+// Dynamic Backgrounds
+function updateBackground() {
+    const hour = new Date().getHours();
+    document.body.classList.remove("category-work", "category-personal", "category-shopping", "category-others");
+
+    // Time-based background
+    if (hour < 12) {
+        document.body.style.background = "linear-gradient(-45deg, #fce38a, #f38181)";
+    } else if (hour < 18) {
+        document.body.style.background = "linear-gradient(-45deg, #00c6ff, #0072ff)";
+    } else {
+        document.body.style.background = "linear-gradient(-45deg, #243544, #3b4c5f)";
+    }
+
+    // Category-based background
+    const category = categorySelect.value;
+    if (category) {
+        document.body.classList.add(`category-${category}`);
+    }
+}
+
+// Dark Mode Toggle
+darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    updateBackground(); // Update background to match dark mode
 });
 
-// Add event listener for "Add Task" button
-addBtn.addEventListener('click', () => {
+// Add task event for the "Add" button
+function addTask() {
     const taskText = todoInput.value.trim();
+    const category = categorySelect.value;
+    const priority = prioritySelect.value;
+    const dueDate = dueDateInput.value;
+    const reminderTime = reminderTimeInput.value;
 
-    if (taskText === '') {
-        alert('Please enter a task!');
+    if (taskText === "") {
+        alert("Please enter a task.");
         return;
     }
 
-    const newTask = {
-        text: taskText,
-        completed: false,
-        priority: false
-    };
+    // Remove "No tasks yet!" message when adding the first task
+    if (todoList.children.length === 1 && todoList.children[0].textContent === "No tasks yet! Add one above to get started.") {
+        todoList.children[0].remove();
+    }
 
-    tasks.push(newTask);
-    saveTasks();
-    renderTasks();
-    todoInput.value = ''; // Clear input field
-});
+    // Create task item
+    const listItem = document.createElement("li");
+    listItem.innerHTML = `
+        <strong>${taskText}</strong>
+        <small>Category: ${category}</small><br />
+        <small>Priority: ${priority}</small><br />
+        <small>Due Date: ${dueDate}</small><br />
+        <small>Reminder Time: ${reminderTime}</small>
+    `;
 
-// Function to render the tasks in the list
-function renderTasks() {
-    todoList.innerHTML = ''; // Clear existing tasks
-
-    tasks.forEach((task, index) => {
-        const taskItem = document.createElement('li');
-        taskItem.classList.toggle('completed', task.completed);
-
-        taskItem.innerHTML = `
-            <span class="${task.priority ? 'priority' : ''}">${task.text}</span>
-            <button class="deleteButton">Delete</button>
-            <button class="editButton">Edit</button>
-            <button class="toggleCompletedButton">${task.completed ? 'Undo' : 'Complete'}</button>
-        `;
-
-        // Add event listeners for buttons
-        taskItem.querySelector('.deleteButton').addEventListener('click', () => {
-            tasks.splice(index, 1);
-            saveTasks();
-            renderTasks();
-        });
-
-        taskItem.querySelector('.editButton').addEventListener('click', () => {
-            const newText = prompt("Edit your task:", task.text);
-            if (newText) {
-                tasks[index].text = newText;
-                saveTasks();
-                renderTasks();
-            }
-        });
-
-        taskItem.querySelector('.toggleCompletedButton').addEventListener('click', () => {
-            tasks[index].completed = !tasks[index].completed;
-            saveTasks();
-            renderTasks();
-        });
-
-        todoList.appendChild(taskItem);
+    // Add delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.addEventListener("click", () => {
+        todoList.removeChild(listItem);
     });
+
+    // Add a checkbox for marking as completed
+    const markCompleteBtn = document.createElement("button");
+    markCompleteBtn.textContent = "✔️ Mark as Completed";
+    markCompleteBtn.addEventListener("click", () => {
+        listItem.classList.toggle("completed");
+        markCompleteBtn.textContent = listItem.classList.contains("completed") ? "❌ Unmark" : "✔️ Mark as Completed";
+    });
+
+    // Append buttons to the list item
+    listItem.appendChild(markCompleteBtn);
+    listItem.appendChild(deleteBtn);
+
+    // Append the task to the list
+    todoList.appendChild(listItem);
+
+    // Clear the input fields
+    todoInput.value = "";
+    dueDateInput.value = "";
+    reminderTimeInput.value = "";
 }
 
-// Function to save tasks to localStorage
-function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-// Clear all tasks
-clearBtn.addEventListener('click', () => {
-    tasks = [];
-    saveTasks();
-    renderTasks();
+// Add task when the "Enter" key is pressed
+todoInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        addTask();
+    }
 });
 
-// Initial render
-renderTasks();
-
+// Initialize
+window.addEventListener("load", () => {
+    fetchQuote(); // Display a quote on load
+    updateBackground(); // Set initial background
+});

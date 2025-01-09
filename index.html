@@ -4,21 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo App</title>
+    <title>ToDo App with Categorization and Reminders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="app-container">
         <h1>ToDo App</h1>
-        <button id="darkModeToggle">Dark Mode</button>
+        <button id="darkModeToggle" aria-label="Toggle Dark Mode">🌙 Dark Mode</button>
+        <p id="motivationalQuote">Stay Motivated...</p>
+
+        <!-- Input field and button -->
         <div class="todo-input">
-            <input type="text" id="todo-input" placeholder="Add a new task..." />
-            <button id="add-btn">Add Task</button>
-            <button id="clear-btn">Clear All</button>
+            <input type="text" id="todo-input" placeholder="Add a new task..." required />
+            <button id="add-btn" aria-label="Add Task">Add Task</button>
         </div>
-        <ul id="todo-list"></ul>
+
+        <!-- Priority dropdown -->
+        <div class="priority-container">
+            <label for="priority">Priority:</label>
+            <select id="priority" aria-label="Select Priority">
+                <option value="low">Low Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority</option>
+            </select>
+        </div>
+
+        <!-- Category dropdown -->
+        <div class="category-container">
+            <label for="category">Category:</label>
+            <select id="category" aria-label="Select Category">
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="shopping">Shopping</option>
+                <option value="others">Others</option>
+            </select>
+        </div>
+
+        <!-- Due date and reminder -->
+        <div class="due-date-container">
+            <label for="due-date">Due Date:</label>
+            <input type="date" id="due-date" aria-label="Select Due Date">
+            <label for="reminder-time">Reminder:</label>
+            <input type="time" id="reminder-time" aria-label="Set Reminder Time">
+        </div>
+
+        <!-- Todo List -->
+        <ul id="todo-list" aria-label="Task List">
+            <li>No tasks yet! Add one above to get started.</li>
+        </ul>
     </div>
+
     <script src="script.js"></script>
 </body>
 
