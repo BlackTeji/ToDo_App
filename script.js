@@ -2,38 +2,50 @@
 const todoInput = document.getElementById("todo-input");
 const addBtn = document.getElementById("add-btn");
 const todoList = document.getElementById("todo-list");
-const darkModeToggle = document.getElementById('darkModeToggle');
-darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
+const darkModeToggle = document.getElementById("darkModeToggle");
+
+// Add event listener for dark mode toggle
+darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
 });
 
-
 // Add event listener for "Add" button
-addBtn.addEventListener("click", addTodo);
+addBtn.addEventListener("click", () => {
+    const taskText = todoInput.value.trim();
 
-// Function to add a new todo item
-function addTodo() {
-    const task = todoInput.value.trim();
-    if (task === "") {
-        alert("Please enter a task.");
+    if (taskText === "") {
+        alert("Please enter a task!");
         return;
     }
 
     // Create new list item
-    const listItem = document.createElement("li");
-    listItem.textContent = task;
+    const taskItem = document.createElement("li");
+    taskItem.innerHTML = `
+      ${taskText}
+      <button class="deleteButton">Delete</button>
+    `;
 
-    // Add delete button
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.addEventListener("click", () => {
-        todoList.removeChild(listItem);
-    });
+    // Animate task addition
+    taskItem.style.opacity = 0; // Start invisible
+    todoList.appendChild(taskItem);
+    setTimeout(() => (taskItem.style.opacity = 1), 50); // Fade in
 
-    // Append task and delete button to the list item
-    listItem.appendChild(deleteBtn);
-    todoList.appendChild(listItem);
-
-    // Clear the input field
+    // Clear input field
     todoInput.value = "";
-}
+
+    // Add delete functionality
+    const deleteButton = taskItem.querySelector(".deleteButton");
+    deleteButton.addEventListener("click", () => {
+        // Animate task removal
+        taskItem.style.transform = "translateX(-100%)";
+        taskItem.style.opacity = 0;
+        setTimeout(() => taskItem.remove(), 300); // Wait for animation
+    });
+});
+
+// Optional: Add enter key functionality for input field
+todoInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        addBtn.click();
+    }
+});
