@@ -8,34 +8,19 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    transition: background-color 0.3s, color 0.3s;
 }
 
 body.dark {
-    background: #161d24;
-    color: #ecf0f1;
+    background: #243546;
+    color: #68a0ad;
 }
 
-body.dark .app-container {
-    background: #34495e;
-}
-
-body.dark #todo-list li {
-    background: #2a3441;
-}
-
-body.dark #todo-list li:hover {
-    background: #46566b;
-}
-
-/* App Container */
 .app-container {
     background-color: #fff;
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    max-width: 90%;
+    width: 450px;
 }
 
 h1 {
@@ -48,6 +33,7 @@ h1 {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    justify-content: space-between;
 }
 
 .todo-input input {
@@ -56,12 +42,6 @@ h1 {
     font-size: 16px;
     border: 1px solid #141414;
     border-radius: 4px;
-    transition: border-color 0.3s;
-}
-
-.todo-input input:focus {
-    border-color: #2863a7;
-    outline: none;
 }
 
 .todo-input button {
@@ -72,11 +52,18 @@ h1 {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .todo-input button:hover {
     background-color: #112dcc;
+}
+
+#clear-btn {
+    background-color: #ff4747;
+}
+
+#clear-btn:hover {
+    background-color: #c82333;
 }
 
 /* Todo List */
@@ -98,8 +85,9 @@ h1 {
     transition: background-color 0.3s;
 }
 
-#todo-list li:hover {
-    background-color: #c2e4ff;
+#todo-list li.completed {
+    background-color: #d3ffd3;
+    text-decoration: line-through;
 }
 
 #todo-list li button {
@@ -109,24 +97,37 @@ h1 {
     border-radius: 4px;
     padding: 5px 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 #todo-list li button:hover {
     background-color: #c82333;
 }
 
-/* Dark Mode Toggle */
+/* Dark Mode */
+body.dark .todo-input input,
+body.dark #todo-list li {
+    background: #1a3a5a;
+}
+
+body.dark .todo-input input {
+    color: #fdfdfd;
+}
+
+body.dark #clear-btn {
+    background: #ff4747;
+}
+
+body.dark #clear-btn:hover {
+    background: #992b36;
+}
+
+/* Dark Mode Toggle Button */
 #darkModeToggle {
-    background: #8f04ec;
+    margin-bottom: 2%;
+    padding: 10px 15px;
+    background-color: #2863a7;
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 10px 15px;
     cursor: pointer;
-    transition: background 0.3s;
-}
-
-#darkModeToggle:hover {
-    background: #fc2525;
 }

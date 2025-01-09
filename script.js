@@ -2,50 +2,91 @@
 const todoInput = document.getElementById("todo-input");
 const addBtn = document.getElementById("add-btn");
 const todoList = document.getElementById("todo-list");
-const darkModeToggle = document.getElementById("darkModeToggle");
+const darkModeToggle = document.getElementById('darkModeToggle');
+const clearBtn = document.getElementById('clear-btn');
+
+// Load tasks from localStorage
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 // Add event listener for dark mode toggle
-darkModeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
+darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
 });
 
-// Add event listener for "Add" button
-addBtn.addEventListener("click", () => {
+// Add event listener for "Add Task" button
+addBtn.addEventListener('click', () => {
     const taskText = todoInput.value.trim();
 
-    if (taskText === "") {
-        alert("Please enter a task!");
+    if (taskText === '') {
+        alert('Please enter a task!');
         return;
     }
 
-    // Create new list item
-    const taskItem = document.createElement("li");
-    taskItem.innerHTML = `
-      ${taskText}
-      <button class="deleteButton">Delete</button>
-    `;
+    const newTask = {
+        text: taskText,
+        completed: false,
+        priority: false
+    };
 
-    // Animate task addition
-    taskItem.style.opacity = 0; // Start invisible
-    todoList.appendChild(taskItem);
-    setTimeout(() => (taskItem.style.opacity = 1), 50); // Fade in
+    tasks.push(newTask);
+    saveTasks();
+    renderTasks();
+    todoInput.value = ''; // Clear input field
+});
 
-    // Clear input field
-    todoInput.value = "";
+// Function to render the tasks in the list
+function renderTasks() {
+    todoList.innerHTML = ''; // Clear existing tasks
 
-    // Add delete functionality
-    const deleteButton = taskItem.querySelector(".deleteButton");
-    deleteButton.addEventListener("click", () => {
-        // Animate task removal
-        taskItem.style.transform = "translateX(-100%)";
-        taskItem.style.opacity = 0;
-        setTimeout(() => taskItem.remove(), 300); // Wait for animation
+    tasks.forEach((task, index) => {
+        const taskItem = document.createElement('li');
+        taskItem.classList.toggle('completed', task.completed);
+
+        taskItem.innerHTML = `
+            <span class="${task.priority ? 'priority' : ''}">${task.text}</span>
+            <button class="deleteButton">Delete</button>
+            <button class="editButton">Edit</button>
+            <button class="toggleCompletedButton">${task.completed ? 'Undo' : 'Complete'}</button>
+        `;
+
+        // Add event listeners for buttons
+        taskItem.querySelector('.deleteButton').addEventListener('click', () => {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+        });
+
+        taskItem.querySelector('.editButton').addEventListener('click', () => {
+            const newText = prompt("Edit your task:", task.text);
+            if (newText) {
+                tasks[index].text = newText;
+                saveTasks();
+                renderTasks();
+            }
+        });
+
+        taskItem.querySelector('.toggleCompletedButton').addEventListener('click', () => {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+            renderTasks();
+        });
+
+        todoList.appendChild(taskItem);
     });
+}
+
+// Function to save tasks to localStorage
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Clear all tasks
+clearBtn.addEventListener('click', () => {
+    tasks = [];
+    saveTasks();
+    renderTasks();
 });
 
-// Optional: Add enter key functionality for input field
-todoInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        addBtn.click();
-    }
-});
+// Initial render
+renderTasks();
+
