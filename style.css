@@ -254,6 +254,6 @@ body.dark #todo-list li.completed {
     #category,
     #due-date,
     #reminder-time {
-        width: 100%;
+        width: 50%;
     }
 }
