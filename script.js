@@ -32,51 +32,126 @@ async function fetchQuote() {
 
 // Dynamic Backgrounds
 function updateBackground() {
-    const category = categorySelect.value;
+    const hour = new Date().getHours();
     document.body.classList.remove("category-work", "category-personal", "category-shopping", "category-others");
-    document.body.classList.add(`category-${category}`);
-}
 
-// Add Todo Item
-addBtn.addEventListener("click", () => {
-    const todoText = todoInput.value.trim();
-    const priority = prioritySelect.value;
-    const category = categorySelect.value;
-    const dueDate = dueDateInput.value;
-    const reminderTime = reminderTimeInput.value;
-
-    if (todoText) {
-        const li = document.createElement("li");
-        li.classList.add(priority);
-
-        // Set text
-        li.innerHTML = `${todoText} <button onclick="markAsCompleted(this)">Mark as Completed</button><button onclick="deleteTodoItem(this)">Delete</button>`;
-
-        // Append to list
-        todoList.appendChild(li);
-
-        // Reset input
-        todoInput.value = '';
-        updateBackground();
+    // Time-based background
+    if (hour < 12) {
+        document.body.style.background = "linear-gradient(-45deg, #fce38a, #f38181)";
+    } else if (hour < 18) {
+        document.body.style.background = "linear-gradient(-45deg, #00c6ff, #0072ff)";
+    } else {
+        document.body.style.background = "linear-gradient(-45deg, #243544, #3b4c5f)";
     }
-});
 
-// Mark Todo as Completed
-function markAsCompleted(button) {
-    const li = button.parentElement;
-    li.classList.toggle("completed");
-}
-
-// Delete Todo Item
-function deleteTodoItem(button) {
-    const li = button.parentElement;
-    todoList.removeChild(li);
+    // Category-based background
+    const category = categorySelect.value;
+    if (category) {
+        document.body.classList.add(`category-${category}`);
+    }
 }
 
 // Dark Mode Toggle
 darkModeToggle.addEventListener("click", () => {
     document.body.classList.toggle("dark");
+    updateBackground(); // Update background to match dark mode
+
+    // Update the "No tasks yet!" message color dynamically
+    const noTasksMessage = todoList.querySelector("li");
+    if (noTasksMessage && noTasksMessage.textContent === "No tasks yet! Add one above to get started.") {
+        noTasksMessage.style.color = document.body.classList.contains("dark") ? "#fff" : "#000";
+    }
 });
 
-// Initial Quote
-fetchQuote();
+// Add task event
+function addTask() {
+    const taskText = todoInput.value.trim();
+    const category = categorySelect.value;
+    const priority = prioritySelect.value;
+    const dueDate = dueDateInput.value;
+    const reminderTime = reminderTimeInput.value;
+
+    if (taskText === "") {
+        alert("Please enter a task.");
+        return;
+    }
+
+    // Remove "No tasks yet!" message if present
+    const noTasksMessage = todoList.querySelector("li");
+    if (noTasksMessage && noTasksMessage.textContent === "No tasks yet! Add one above to get started.") {
+        noTasksMessage.remove();
+    }
+
+    // Create task item
+    const listItem = document.createElement("li");
+    listItem.innerHTML = `
+        <strong>${taskText}</strong>
+        <small>Category: ${category}</small><br />
+        <small>Priority: ${priority}</small><br />
+        <small>Due Date: ${dueDate}</small><br />
+        <small>Reminder Time: ${reminderTime}</small>
+    `;
+
+    // Add delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.addEventListener("click", () => {
+        todoList.removeChild(listItem);
+
+        // Show "No tasks yet!" message if the list is empty
+        if (todoList.children.length === 0) {
+            const noTasksMessage = document.createElement("li");
+            noTasksMessage.textContent = "No tasks yet! Add one above to get started.";
+            noTasksMessage.style.textAlign = "center";
+            noTasksMessage.style.color = document.body.classList.contains("dark") ? "#fff" : "#000";
+            todoList.appendChild(noTasksMessage);
+        }
+    });
+
+    // Add a checkbox for marking as completed
+    const markCompleteBtn = document.createElement("button");
+    markCompleteBtn.textContent = "✔️ Mark as Completed";
+    markCompleteBtn.addEventListener("click", () => {
+        listItem.classList.toggle("completed");
+        markCompleteBtn.textContent = listItem.classList.contains("completed") ? "❌ Unmark" : "✔️ Mark as Completed";
+    });
+
+    // Append buttons to the list item
+    listItem.appendChild(markCompleteBtn);
+    listItem.appendChild(deleteBtn);
+
+    // Append the task to the list
+    todoList.appendChild(listItem);
+
+    // Clear the input fields
+    todoInput.value = "";
+    dueDateInput.value = "";
+    reminderTimeInput.value = "";
+}
+
+// Add event listener for adding tasks on both click and touch events
+addBtn.addEventListener("click", addTask);
+addBtn.addEventListener("touchstart", addTask); // Added for mobile touch events
+
+// Ensure the "Enter" key can also add a task
+todoInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        addTask();
+    }
+});
+
+// Initialize
+window.addEventListener("load", () => {
+    fetchQuote(); // Display a quote on load
+    updateBackground(); // Set initial background
+
+    // Add initial "No tasks yet!" message
+    if (todoList.children.length === 0) {
+        const noTasksMessage = document.createElement("li");
+        noTasksMessage.textContent = "No tasks yet! Add one above to get started.";
+        noTasksMessage.style.textAlign = "center";
+        noTasksMessage.style.color = document.body.classList.contains("dark") ? "#fff" : "#000";
+        todoList.appendChild(noTasksMessage);
+    }
+});
+
