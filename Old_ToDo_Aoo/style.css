@@ -10,31 +10,6 @@ body {
     height: 100vh;
 }
 
-body.dark {
-    background: #2c3e50;
-    color: #ecf0f1;
-}
-
-body.dark .container {
-    background: #34495e;
-}
-
-body.dark #addTaskButton {
-    background: #16a085;
-}
-
-body.dark #addTaskButton:hover {
-    background: #1abc9c;
-}
-
-body.dark #taskList li {
-    background: #3c4a5b;
-}
-
-body.dark #taskList li:hover {
-    background: #46566b;
-}
-
 .app-container {
     background-color: #fff;
     padding: 20px 30px;

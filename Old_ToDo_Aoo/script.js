@@ -2,11 +2,6 @@
 const todoInput = document.getElementById("todo-input");
 const addBtn = document.getElementById("add-btn");
 const todoList = document.getElementById("todo-list");
-const darkModeToggle = document.getElementById('darkModeToggle');
-darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-});
-
 
 // Add event listener for "Add" button
 addBtn.addEventListener("click", addTodo);
