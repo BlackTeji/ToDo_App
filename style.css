@@ -224,7 +224,7 @@ body.dark #todo-list li.completed {
 
     .todo-input {
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
     }
 
     .todo-input input,
